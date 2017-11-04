@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="js/functions.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" type="text/css" href="css/login.css">
+    <!--fonts-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Allerta+Stencil">
+    <title>Login</title>
+  </head>
+  <body>
+    <div id="loginScreen" class="w3-container">
+      <div class="w3-container w3-center logo">
+        <h1 class="w3-allerta w3-text-white logoSize">Smart Jobs <img class="logoWatson" src="img/icon.png"/></h1>
+      </div>
+      <div class="w3-container w3-center">
+
+        <form id="formLogin" onsubmit="checkLogin()" class="w3-container w3-center w3-padding w3-margin-top">
+
+          <label class="entryLetter w3-allerta w3-text-black ">E-mail</label>
+          <input id="emailLogin" class="w3-input w3-border-bottom w3-border-black loginInput textFontSize" name="email" type="email" required>
+
+          <label class="w3-text-black entryLetter w3-allerta">Password</label>
+          <input id="senhaLogin" class="w3-input w3-border-bottom w3-border-black loginInput textFontSize" name="senha" type="password" required>
+
+          <div id="msgErroLogin" class="w3-hide w3-text-red fontPeq w3-center w3-animate-bottom" > Password Incorrect</div>
+
+          <button type="submit" class="w3-button loginButton w3-allerta textFontSize">Login</button>
+
+          <!--<br><a href="main.html" class="textFontSize"> Iniciar sem login</a>-->
+
+          <br><br><a href="register.html" class="textFontSize w3-text-white w3-allerta">Create Account</a>
+
+        </form>
+
+      </div>
+      <div class="w3-container w3-margin letterTiny w3-center">
+        Powered By:
+        <div class="w3-center">
+          <img class="bluemix" src="img/bluemix.png" />&#09;&#09;
+          <img class="logoWatson" src="img/download.jpg" />
+        </div>
+      </div>
+
+    </div>
+    <script>
+      $('#formLogin').submit(function(e) {
+        //alert("p");
+        e.preventDefault();
+      });
+
+      $('#formLogin').ready(function() {
+        if(localStorage.userEmail !== undefined){
+          //alert("logged in automatically");
+          location.href = 'index.html';
+        }
+        else{
+          //alert(localStorage.userEmail);
+        }
+      });
+
+      //check valid user
+      function checkLogin(){
+        var sendData = $("#formLogin").serialize();
+        $.get( 'http://ibmsmartjobs.co.nf/login.php', sendData )
+          .done(function(data){
+          //alert(data);
+          localStorage.userEmail = $("#emailLogin").val();
+          localStorage.userSenha = $("#senhaLogin").val();
+          location.href = 'index.html';
+        })
+          .fail(function(jqXHR, textStatus, errorThrown) {
+          if(jqXHR.status == 404){
+            $("#msgErroLogin").text("Password Incorrect");
+          }
+          else if(jqXHR.status == 500){
+            $("#msgErroLogin").text("Server Error. Try later");
+          }
+          $("#msgErroLogin").removeClass("w3-hide");
+          setTimeout(function(){ $("#msgErroLogin").addClass("w3-hide"); }, 2000);
+        });
+      }
+
+    </script>
+  </body>
+</html>

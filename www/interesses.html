@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Template Bootstrap</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+    <!-- jQuery (necessario para os plugins Javascript do Bootstrap) -->
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/variables.js"></script>
+    <script type="text/javascript" src="js/functions.js"></script>
+
+    <script type="text/javascript">
+
+    </script>
+  </head>
+
+  <body>
+    <div class="w3-bar w3-text-white header">
+      <div class="barBlue"></div>
+      <div class="barBlack"></div>
+      <a href="index.html" class="w3-bar-item "><img class="logo" src="img/download.jpg" /></a>
+      <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hover-white" onclick="openNav()">&#9776;</a>
+    </div>
+
+    <div class=" text-center">
+      <div id="menuMobile" class="w3-bar-block w3-hide">
+        <a href="index.html" class="w3-bar-item w3-hover-white w3-border-bottom w3-border-black w3-button">Home</a>
+        <a href="interesses.html" class="w3-bar-item w3-hover-white w3-button w3-border-bottom w3-border-black">Configurations</a>
+        <a href="personal.html" class="w3-bar-item w3-hover-white w3-button w3-border-bottom w3-border-black">Personal Assistant</a>
+        <a href="#" class="w3-bar-item w3-hover-white w3-button w3-border-bottom w3-border-black" onclick="logOut()">Logout</a>
+      </div>
+      <div class=" w3-margin-top row">
+        <div class="col-xs-12">
+          <h3 class="title" >Configurations</h3>
+        </div>
+      </div>
+
+      <div class="row sizeInput">
+        <div class="col-xs-12 ">
+          <h4 class="font">See the workers around you within: (km)</h4>
+          <input type="number" class="w3-center" name="mindist" id="mindist" step="0.01" style="border-radius: 5px;">
+        </div>
+      </div>
+      <div class="buttonPosition w3-container w3-center">
+        <button class="  loginButton w3-button  font" onclick="save()">Save</button>
+      </div>
+    </div>
+
+
+
+    <script type="text/javascript">
+      $(document).ready(function(){
+
+        var mD = localStorage.getItem("minDist");
+        if(mD == '' || mD == null || mD == undefined)
+          localStorage.setItem("minDist", 10);
+        $('#mindist').val(mD);
+
+        if(localStorage.percent != undefined){
+          $('#percent').val(localStorage.percent);
+        }
+
+        $('#mindist').focusout(function(){localStorage.setItem("minDist", $('#mindist').val())})
+
+        // Instantiate fastclick
+        FastClick.attach(document.body);
+      });
+
+      function save(){
+        localStorage.minDist =  $('#mindist').val();
+        localStorage.percent =  $('#percent').val();
+        location.href = "index.html";
+      }
+    </script>
+
+  </body>
+</html>

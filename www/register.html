@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="js/functions.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" type="text/css" href="css/login.css">
+    <!--fonts-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Allerta+Stencil">
+    <title>Cadastro</title>
+  </head>
+  <body>
+    <div id="loginScreen" class="w3-container">
+      <div class="w3-container w3-center logoCad">
+        <h1 class="w3-allerta w3-text-white logoSizeCad">GoodJob</h1>
+      </div>
+      <div class="w3-container w3-center">
+
+        <form id="formRegister" onsubmit="registerUser()" class="formCadastro w3-container w3-padding ">
+
+          <label class="w3-allerta entryLetter">First Name</label>
+          <input  name="name" class="w3-input w3-border-bottom w3-border-black loginInput" type="text" required>
+
+          <label class="w3-allerta entryLetter">E-mail</label>
+          <input name="email"  id="emaiRegister" class="w3-input w3-border-bottom w3-border-black loginInput" type="email" required>
+
+          <label class="w3-allerta entryLetter">Password</label>
+          <input name="psw"  id="pswReg" class="w3-input w3-border-bottom w3-border-black loginInput" type="password" required>
+
+          <label class="w3-allerta entryLetter">Repeat Password</label>
+          <input name="pswr" id="pswRegRep" class="w3-input w3-border-bottom w3-border-black loginInput" type="password" required>
+
+          <div id="msgErroReg" class="w3-hide w3-text-red fontPeq w3-center w3-animate-bottom" > Password Incorrect</div>
+
+          <button class="w3-button w3-allerta loginButton">Register</button>
+
+
+        </form>
+      </div>
+    </div>
+
+    <script>
+      $('#formRegister').ready(function() {
+        if(localStorage.userEmail !== undefined){
+          //alert("logged in automatically");
+          location.href = 'index.html';
+        }
+        else{
+          //alert(localStorage.userEmail);
+        }
+      });
+
+      $('#formRegister').submit(function(e) {
+        //alert("p");
+        e.preventDefault();
+      });
+
+      function registerUser(){
+        localStorage.userEmail = $("#emaiRegister").val();
+        location.href = "index.html";
+      }
+
+      //register new user
+      function registerUser(){
+        if($("#pswReg").val() != $("#pswRegRep").val()){
+          $("#msgErroReg").text("Passowrds don't match");
+          $("#msgErroReg").removeClass("w3-hide");
+          setTimeout(function(){ $("#msgErroReg").addClass("w3-hide"); }, 2000);
+        }
+        else{
+          var sendData = $("#formRegister").serialize();
+          //alert(sendData);
+          $.post( 'http://ibmsmartjobs.co.nf/register.php', sendData )
+            .done(function(data){
+            localStorage.userEmail = $("#emaiRegister").val();
+            localStorage.userSenha = $("#senhaRegister").val();
+            //alert("success " + data);
+            location.href = 'index.html';
+          })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+            if(jqXHR.status == 404){
+              $("#msgErroReg").text("Error. Try again later");
+              alert(JSON.stringify(jqXHR));
+            }
+            else if(jqXHR.status == 500){
+              $("#msgErroReg").text("Server Error. Try later");
+              //alert(JSON.stringify(jqXHR));
+            }
+            else{
+              $("#msgErroReg").text("Unknown error. Try later");
+              //alert(JSON.stringify(jqXHR));
+            }
+            $("#msgErroReg").removeClass("w3-hide");
+            setTimeout(function(){ $("#msgErroReg").addClass("w3-hide"); }, 2000);
+          });
+        }
+      }
+
+    </script>
+
+  </body>
+</html>

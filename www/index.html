@@ -1,60 +1,304 @@
 <!DOCTYPE html>
-<!--
-    Copyright (c) 2012-2016 Adobe Systems Incorporated. All rights reserved.
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
+    <title>Template Bootstrap</title>
 
-    http://www.apache.org/licenses/LICENSE-2.0
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
-<html>
+    <!-- jQuery (necessario para os plugins Javascript do Bootstrap) -->
+    <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/variables.js"></script>
+    <script type="text/javascript" src="js/functions.js"></script>
+    <script type="text/javascript" src="js/underscore.js"></script>
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="format-detection" content="telephone=no" />
-    <meta name="msapplication-tap-highlight" content="no" />
-    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
-    <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
-    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
-    <!-- Good default declaration:
-    * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
-    * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
-    * Disables use of eval() and inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
-        * Enable inline JS: add 'unsafe-inline' to default-src
-        * Enable eval(): add 'unsafe-eval' to default-src
-    * Create your own at http://cspisawesome.com
-    -->
-    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
+    <!-- Google Maps -->
+    <!-- *** Essa key eh apenas para teste, nao utilizar *** -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwGVdz0WVyzusGGkV5MLkjlTuo-5WhUc0"></script>
 
-    <link rel="stylesheet" type="text/css" href="css/index.css" />
-    <title>Hello World</title>
-</head>
+    <script>
+      var map;
+      var markers = [];
+      ////////////////////////////////////////////////////////
+      // Need to be this way to prevent ugly message on ios //
+      ////////////////////////////////////////////////////////
+      //
+      //find location
+      function onDeviceReady() {
+        if(localStorage.userEmail == undefined){
+          location.href = "login.html";
+        }
 
-<body>
-    <div class="app">
-        <h1>PhoneGap</h1>
-        <div id="deviceready" class="blink">
-            <p class="event listening">Connecting to Device</p>
-            <p class="event received">Device is Ready</p>
-        </div>
-    </div>
-    <script type="text/javascript" src="cordova.js"></script>
-    <script type="text/javascript" src="js/index.js"></script>
-    <script type="text/javascript">
-        app.initialize();
+        $body = $("body");
+        $body.addClass("loading");
+        //localStorage.minDist = 2;
+        navigator.geolocation.getCurrentPosition(onSuccess, onError, { timeout: 15000 });
+        alert(navigator.geolocation.getAccuracy());
+        var mD = localStorage.minDist; //min dist to start turning the workers on
+        if(mD == '' || mD == null || mD == undefined)
+          localStorage.minDist = 10;
+      }
+
+      function onSuccess(position) {
+        var lat=position.coords.latitude;
+        var lang=position.coords.longitude;
+
+        //Google Maps
+        var myLatlng = new google.maps.LatLng(lat,lang);
+        var mapOptions = {zoom: 15,center: myLatlng}
+        map = new google.maps.Map(document.getElementById('#map-canvas'), mapOptions);
+        var marker = new google.maps.Marker({position: myLatlng, map: map, title:'My Location'}); //add a marker in my posiuti
+
+        $body.removeClass("loading");
+      }
+
+      function onError(error) {
+        // ios
+        if(navigator.userAgent.match(/(iPhone|iPod|iPad)/)){
+          falert('O NextOffer precisa da sua localização para encontrar os estabelecimentos próximos. Por favor, ative seu GPS em Ajustes -> Privacidade -> Serv. Localização -> NextOffer');
+
+          // Android
+        } else {
+          falert('Por favor, ative seu GPS. O NextOffer precisa da sua localização para encontrar os estabelecimentos próximos.');
+          location.reload();
+        }
+      }
+      ////////////////////////////
+      // getLocation ends here! //
+      ////////////////////////////
+
+      function informlocation() {
+        navigator.geolocation.getCurrentPosition(sucesso, erro, { timeout: 15000 });
+
+        function sucesso(position){
+          var latitude = position.coords.latitude;
+          var longitude = position.coords.longitude;
+          console.log('latitude: ' + latitude);
+          console.log('longitude: ' + longitude);
+
+          getOtherWorkers(latitude, longitude);
+          sendMyPosition(latitude, longitude);
+          sendMyDangerState();
+        }
+
+        function erro(){
+          informlocation();
+        }
+      }
+
+      function getOtherWorkers(latitude, longitude){
+        //get workers locantion and stress degree
+        $.ajaxSetup({async: false});
+        $.get('http://ibmsmartjobs.co.nf/getWorkers.php') //get workers locantion and stress degree
+          .done(function(data){
+          localStorage.workers = data;
+          //alert(data);
+        });
+        var workers = JSON.parse(localStorage.workers);
+        console.log(workers);
+
+        //calculate distance from user
+        var radlata = latitude*3.14159/180; // transforming degrees to radians
+        var radlonga = longitude*3.14159/180; // transforming degrees to radians
+        var R = 6372.795477598; //Earth radius in km
+        var minDist = parseFloat(localStorage.getItem("minDist"));
+        //alert(minDist);
+        for(var i = 0 ; i < workers.length ; i++){
+
+          var radlatb = workers[i].x * 3.14159/180;
+          var radlongb = workers[i].y * 3.14159/180;
+          var distance = R * Math.acos(Math.sin(radlata)*Math.sin(radlatb)+Math.cos(radlata)*Math.cos(radlatb)*Math.cos(radlonga-radlongb));
+          //alert(distance);
+          if(distance < minDist && workers[i].email != localStorage.userEmail){
+            //alert("oi");
+            var lightLatlng = new google.maps.LatLng(workers[i].x,workers[i].y);
+            var icon = {
+              url: "img/puntoDark.png", // url
+              scaledSize: new google.maps.Size(30, 30), // scaled size
+              origin: new google.maps.Point(0,0), // origin
+              anchor: new google.maps.Point(0, 0) // anchor
+            };
+            //alert(workers[i].degree);
+            var coWorkerDegree = getCoWorkerDegree();
+            switch (coWorkerDegree){
+              case 0:
+                icon = {
+                  url: "img/puntoGreen.png", // url
+                  scaledSize: new google.maps.Size(25, 25), // scaled size
+                  origin: new google.maps.Point(0,0), // origin
+                  anchor: new google.maps.Point(0, 0) // anchor
+                };
+                break;
+
+              case 1:
+                icon = {
+                  url: "img/puntoAmarillo.png", // url
+                  scaledSize: new google.maps.Size(20, 20), // scaled size
+                  origin: new google.maps.Point(0,0), // origin
+                  anchor: new google.maps.Point(0, 0) // anchor
+                };
+                break;
+
+              case 2:
+                icon = {
+                  url: "img/puntoRed.png", // url
+                  scaledSize: new google.maps.Size(20, 20), // scaled size
+                  origin: new google.maps.Point(0,0), // origin
+                  anchor: new google.maps.Point(0, 0) // anchor
+                };
+                break;
+
+              case 3:
+                icon = {
+                  url: "img/puntoDark.png", // url
+                  scaledSize: new google.maps.Size(20, 20), // scaled size
+                  origin: new google.maps.Point(0,0), // origin
+                  anchor: new google.maps.Point(0, 0) // anchor
+                };
+                break;
+                                  }
+            var marker = new google.maps.Marker({position: lightLatlng, map: map, icon:icon});
+            markers.push(marker);
+          }
+
+        } //show workers
+      }
+
+      function getCoWorkerDegree(){
+        return Math.floor((Math.random() * 3));
+      }
+
+      function sendMyPosition(latitude, longitude){
+        //send my location
+        $.ajaxSetup({async: false});
+        $.post('http://ibmsmartjobs.co.nf/registrarUbicacion.php', "x=" + latitude + "&y=" + longitude + "&email=" + localStorage.userEmail)
+          .done(function(data){
+          console.log(data);
+        })
+          .fail(function(jqXHR, textStatus, errorThrown){
+          alert("fail " + JSON.stringify(jqXHR));
+        });
+      }
+
+      function sendMyDangerState(){
+
+        $.ajaxSetup({async: false});
+        $.get('https://iotadriller.mybluemix.net/brac1') //get workers locantion and stress degree
+          .done(function(received){
+          //alert(data.payload);
+          var danger = 0;
+          var data = received;
+          console.log(data.payload.temperature);
+          data = data.payload;
+          saveDanger();
+          console.log("temp= " + data.temperature);
+          console.log("vel= " + data.velocity);
+          console.log("ac= " + data.aceletarion);
+          console.log("tox= " + data.toxicity);
+          console.log("pulse= " + data.pulsacion);
+          if(data.temperature > 37 || data.temperature < 36){
+            danger++;
+          }
+          if(data.velocity > 20 && data.velocity < 40){
+            danger ++
+          }
+          if(data.aceletarion == 10){
+            danger++;
+          }
+          if(data.temperature > 37 || data.temperature < 36){
+            danger++;
+          }
+          if(data.toxicity == 1){
+            danger++;
+          }
+          if(data.pulsacion > 110 || data.pulsacion < 60){
+            danger ++;
+          }
+
+
+          //localStorage.myDanger = danger;
+          console.log(danger);
+        });
+
+        $.ajaxSetup({async: false});
+        $.post('http://ibmsmartjobs.co.nf/registerDanger.php', "email=" + localStorage.userEmail + "&danger=" + localStorage.myDanger)
+          .done(function(data){
+          console.log(data);
+        })
+          .fail(function(jqXHR, textStatus, errorThrown){
+          alert("fail " + JSON.stringify(jqXHR));
+        });
+
+      }
+
+      //arranging the header footer and scroll
+      function fPreparWindows(){
+        var TopDist = $('#Header').height();
+        var BottomDist = $('#Footer').height();
+        var WindowDist = $(window).height();
+        var WindowWidth = $(window).width();
+        var Dist = WindowDist - TopDist - BottomDist;
+        $(".frame").css({'top':TopDist + 'px' , 'height':Dist + 'px' , 'padding-top':'1px' , 'margin-top':'0px'});
+        $("#ActionButtonContainer").css({'bottom':BottomDist+12 + 'px' , 'right': '5% ' });
+      }
+
+      function saveDanger(){
+        localStorage.myDanger = Math.floor((Math.random() * 3) + 1);
+      }
+
     </script>
-</body>
 
+  </head>
+
+  <body onload="onDeviceReady()">
+
+    <div class="w3-bar w3-text-white header">
+      <div class="barBlue"></div>
+      <div class="barBlack"></div>
+      <a href="index.html" class="w3-bar-item a "><img class="logo" src="img/icon.png" /></a>
+      <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hover-white" onclick="openNav()">&#9776;</a>
+    </div>
+
+    <div class="frame" style="">
+      <div id="menuMobile" class="w3-bar-block w3-hide">
+        <a href="index.html" class="w3-bar-item w3-hover-white w3-border-bottom w3-border-black w3-button">Home</a>
+        <a href="interesses.html" class="w3-bar-item w3-hover-white w3-button w3-border-bottom w3-border-black">Configurations</a>
+        <a href="personal.html" class="w3-bar-item w3-hover-white w3-button w3-border-bottom w3-border-black">Personal Assistant</a>
+        <a href="#" class="w3-bar-item w3-hover-white w3-button w3-border-bottom w3-border-black" onclick="logOut()">Logout</a>
+      </div>
+
+      <div id="#map-canvas" style="height:90%;width:100%;overflow-y:hidden;"></div>
+
+      <div class="loadingicon"></div>
+
+    </div>
+
+    <script type="text/javascript">
+      $(document).ready(function(){
+        fPreparWindows();
+
+        setInterval(function(){
+          for(i=0; i<markers.length; i++){
+            markers[i].setMap(null);
+          }
+          informlocation();
+
+        }, 10000);
+
+        // Instantiate fastclick
+        FastClick.attach(document.body);
+      });
+
+
+    </script>
+
+  </body>
 </html>

@@ -1,0 +1,8 @@
+criar empatia pues en la empresa va a hablar con quien esta mal
+
+
+en nivel negro hace una llamada a la central
+
+no es necesario enviar datos al mobil y si al ibm
+
+datos de sensores -> node red -> check ok -> insert into db -> ya esta!
