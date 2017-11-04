@@ -1,0 +1,523 @@
+#loginScreen {
+  height: 100%;
+  background-color: #B3E5FC;
+  background-image: url("../img/f.jpg");
+  background-repeat: no-repeat;
+  background-attachment:fixed;
+  background-position:center;
+  background-size:cover;
+}
+
+html, body {
+  height: 100%;
+  position:fixed;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+}
+
+.logo {
+  margin-top:5vh;
+  z-index: 9999 !important;
+}
+.w3-comicSans {
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+.w3-allerta {
+  font-family: "Allerta Stencil", Sans-serif;
+  text-shadow:1px 1px 0 #444;
+}
+
+.logoSize {
+  font-size:7vh;
+  text-shadow: 1px 1px 4px black;
+}
+
+.loginInput {
+  background: transparent;
+  margin-bottom: 2vh;
+  height: 6vh;
+}
+
+.loginMargin {
+
+}
+
+.labelShadow {
+  font-size: 3vh;
+  text-shadow: 1px 1px 3px black;
+}
+
+.loginButton {
+  margin: 5vh 0vmin 0vmin 0vmin;
+  background-color: #448AFF !important;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  font-size: 4vmin;
+}
+
+.logoSizeCad {
+  font-size:6vh;
+  text-shadow: 1px 1px 4px black;
+}
+
+.logoCad {
+  margin-top: 6vh;
+}
+
+.formLogin {
+  margin-top: 2vh;
+}
+
+.textFontSize {
+  font-size: 3.5vh;
+  letter-spacing: 0.2vh;
+}
+
+.fundo {
+  height: 100%;
+  padding: 0;
+}
+
+#demo {
+  width: 100%;
+}
+
+.bigFont {
+  font-size: 5.7vh;
+}
+
+.selectWork {
+  font-size: 3vh;
+  width: 100%;
+  margin:0;
+  padding:1vh;
+}
+
+.divSelectWork {
+  max-height: 35vh;
+  padding: 0;
+  overflow: scroll;
+}
+
+.divMain {
+  height: 100%;
+}
+
+.addNew {
+  display: block;
+  margin-top:2vh;
+  height: 7vh;
+  width: 7vh;
+  padding:1vh;
+  z-index: 0;
+  border-radius: 50%;
+}
+
+.start {
+  padding:1vh;
+  font-size: 4vh;
+  bottom: 2%;
+}
+
+#menuMobile {
+font-size: 2vh;
+
+}
+
+
+::-webkit-scrollbar {
+    display: none;
+}
+.exercise {
+  font-size: 3vh;
+  width: 100%;
+  margin:0;
+  padding:0;
+}
+
+a {
+  text-decoration: none;
+}
+
+.fontTitleSmall {
+  font-size: 4.5vh;
+}
+
+.iconX {
+
+}
+
+.labelEdit {
+  font-size: 3vh;
+  text-shadow: 0 0 3px white;
+}
+
+.confirmEdit {
+  font-size: 4vh;
+}
+
+
+.lineBreak {
+  margin:0;
+  padding: 0;
+}
+
+#startScreen {
+  height: 100%;
+  background-image: url("../img/black-bg.jpg");
+  background-repeat: no-repeat;
+  background-attachment:fixed;
+  background-position:center;
+  background-size:cover;
+}
+
+.nomeEx {
+  font-size: 6vh;
+  text-shadow: 0.2vh 0.2vh 0.2vh black;
+  max-height: 10vh;
+  overflow: scroll;
+}
+
+.nomeExDiv {
+  margin-top: 3vh;
+}
+
+.timer {
+  margin: 0px;
+  padding: 0px;
+}
+
+.countdown {
+  font-size: 22vh;
+  text-shadow: 1vh 1vh 1vh black;
+  margin:0;
+  padding: 0;
+}
+
+.iconFontSize {
+  font-size: 3vh;
+  margin: 0;
+}
+
+.lastInfo {
+  font-size: 3vh;
+  text-align: center;
+}
+
+
+.inputSize {
+  width: 50%;
+  padding:0;
+  margin:0;
+  height: 100%;
+  display: inline-block;
+}
+
+.signSize {
+  width: 20%;
+  padding:0;
+  margin:0;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.chooseNumberDiv {
+  width: 50vh;
+  padding:0;
+  margin: 0vh 0vh 1vh 0vh ;
+  font-size: 5vh;
+  display: inline-block;
+}
+
+#valueRep {
+  width: 100%;
+  margin: 0;
+  height: 100%;
+  text-align: center;
+
+}
+
+.header {
+  font-size: 3.5vh;
+  position:fixed;
+}
+
+#valueWeight {
+  width: 100%;
+  margin: 0;
+  height: 100%;
+  text-align: center;
+}
+
+.letterSerie {
+  font-size: 4vh;
+  text-shadow: 0.3vh 0.4vh 0.3vh black;
+  letter-spacing: 0.5vh;
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 45%;
+  font-size: 2vh;
+  float: left;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: center;
+}
+
+tr:nth-child(even) {
+}
+
+.tableToday {
+
+}
+
+#btnDone {
+  margin: 5%;
+  height: 8vh;
+  width: 22vh;
+  padding:0;
+}
+
+#tableToday {
+ width:90%;
+  margin-left: 5%;
+}
+
+#btnSaveR {
+  margin-top: 6vh;
+  font-size: 4vh;
+  text-shadow: 0.2vh 0.2vh 0.2vh black;
+}
+
+.fontPeq {
+  font-size: 2.3vh;
+  font-weight: bold;
+  text-shadow: 0.2vh 0.2vh 0.8vh white;
+}
+
+.buttonsDivEdit {
+  margin-top: 7vh;
+}
+
+.singleTable {
+  margin-left: 27.5%;
+}
+
+.doubleTable {
+  margin-left: 10%;
+}
+
+.loading {
+
+}
+
+.loadIcon {
+  width: 100%;
+  opacity: 1;
+}
+
+.mySpin {
+  margin-top: 14%;
+}
+
+
+
+.modalContentLoading{
+
+}
+
+.loadIcon{
+  opacity: 1.5 !important;
+}
+
+.containerLoading {
+  margin-top: 16%;
+}
+
+#load2 {
+}
+
+.contaienerLoading {
+  margin-top: 16%;
+}
+
+#load {
+
+}
+
+.fontAlert {
+  font-size: 5vh ;
+}
+
+#btnFinWk {
+  font-size: 5vh;
+  width: 22vh;
+  height: 9vh;
+  padding:0;
+  border: 0.7vh solid black;
+}
+
+.coonfirmbtn {
+    margin-top: 5vh;
+  padding:1vh;
+  font-size: 4vh;
+}
+
+#completeBar {
+  min-height: 100%;
+  width: 0;
+  max-width: 100%;
+  margin: 0;
+}
+
+#spanfinish {
+  background-color: transparent;
+  float: left;
+  margin-left: 14%;
+}
+
+.modalOptions {
+  padding: 5vh;
+}
+
+.fontTitleExtraSmall {
+  font-size: 3.5vh;
+}
+
+#btnSkip {
+  margin: 5%;
+  font-size: 4vh;
+  width: 22vh;
+  height: 8vh;
+  padding:0;
+}
+
+#barSkip {
+  min-height: 100%;
+  width: 0;
+  max-width: 100%;
+  margin: 0;
+}
+
+#spanskip {
+  background-color: transparent;
+  float: left;
+  margin-left: 29%;
+  margin-top: 4%;
+}
+
+.boxShadow {
+  box-shadow: 5px 5px 5px #888888;
+}
+
+.littleBoxShadow {
+  box-shadow: 4px 4px 3px #888888;
+}
+
+.tinyBoxShadow {
+  box-shadow: 2px 2px 3px #888888;
+}
+
+.margin20 {
+  margin-top: 20vh;
+}
+
+.margin15 {
+  margin-top: 7vh;
+}
+
+.margin10 {
+  margin-top:5vh;
+}
+
+.save1 {
+  position: absolute;
+  padding:1vh;
+  font-size: 4vh;
+  bottom: 10%;
+  left:12%
+}
+
+.buttons {
+}
+
+.save2 {
+  position: absolute;
+  padding:1vh;
+  font-size: 4vh;
+  bottom: 10%;
+  right:12%
+}
+
+.save0 {
+    position: absolute;
+  padding:1vh;
+  font-size: 4vh;
+  bottom: 10.5%;
+  left:12%
+}
+
+.save3 {
+  position:absolute;
+  width: 24vh;
+  height:8vh;
+  font-size: 3.5vh;
+  bottom: 10%;
+  padding:0;
+  margin-top: -4vh; /* Negative half of height. */
+margin-left: -12vh; /* Negative half of width. */
+}
+
+.divTable {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 25vh;
+  width: 50%;
+  font-size: 1vh;
+  float: left;
+}
+
+#tableBf {
+  width:90%;
+margin-left: 5%;
+}
+
+.littleBoxShadowColor {
+  box-shadow: 5px 5px 5px rgba(100, 100, 100, 0.8);
+}
+
+.spanHold {
+  font-size: 5vmin;
+  margin-left: 40%;
+  color: orange;
+}
+
+.fixedBotPlus {
+  position:absolute;
+  bottom: 25%;
+  right: 10%;
+}
+
+.logoWatson {
+  width: 9vmin;
+  height: 9vmin;
+}
+
+.bluemix {
+  width: 30vmin;
+
+}
+
+.letterTiny {
+  font-size: 2vmin;
+}
+
+.entryLetter {
+  font-size: 4vmin;
+}
